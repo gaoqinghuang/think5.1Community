@@ -1,6 +1,6 @@
-{include file="public/header" /}
-{include file="public/nav" /}
+{extend name="public/base" /}
 
+{block name="body"}
 <div class="row">
     <div class="col-md-8">
         <div class="page-header">
@@ -74,5 +74,4 @@
             })
         })
     </script>
-    {include file="public/right" /}
-    {include file="public/footer" /}
+    {/block}
