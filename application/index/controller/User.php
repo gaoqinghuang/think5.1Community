@@ -47,6 +47,7 @@ class User extends Base
 
     public function login()
     {
+        $this->logined();
         return $this->fetch('',['title'=>'用户登录']);
     }
 
@@ -85,5 +86,11 @@ class User extends Base
         {
             $this->error('请求类型错误','login');
         }
+    }
+
+    public function logout()
+    {
+        Session::clear();
+        $this->success('退出登录成功','index/index');
     }
 }
