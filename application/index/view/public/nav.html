@@ -16,9 +16,12 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">PHP</a></li>
-                        <li><a href="#">JavaScript</a></li>
+                        <li {empty name="$Request.param.cate_id"} class="active" {/empty}
+                        ><a href="#">首页</a></li>
+                        {volist name="cateList" id="cate"}
+                        <li {eq name="$cate.id" value="$Request.param.cate_id"} class="active" {/eq}><a href="{:url('index/index',['cate_id'=>$cate.id])}">{$cate.name}</a></li>
+                        {/volist}
+
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

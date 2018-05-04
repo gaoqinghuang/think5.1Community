@@ -29,8 +29,10 @@ class User extends Base
             }
             else
             {
-                if(UserModel::create($data))
+                if($user = UserModel::create($data))
                 {
+                    Session::set('user_id',$user->id);
+                    Session::set('user_name',$user->name);
                     return ['status'=>1,'message'=>'成功!'];
                 }
                 else
