@@ -57,6 +57,14 @@ class Index extends Base
                 {
                     $this->error($file->getError());
                 }
+                if(Article::create($data))
+                {
+                    $this->success('文章发布成功','index');
+                }
+                else
+                {
+                    $this->success('文章发布失败');
+                }
             }
         }
         else
