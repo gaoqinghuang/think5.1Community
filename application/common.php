@@ -10,3 +10,29 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+if(!function_exists('getUserName'))
+{
+    function getUserName($id)
+    {
+        return \think\Db::table('zh_user')->where('id',$id)->value('name');
+    }
+}
+
+
+if(!function_exists('getCateName'))
+{
+    function getCateName($id)
+    {
+        return \think\Db::table('zh_article_category')->where('id',$id)->value('name');
+    }
+}
+
+//过滤文章摘要
+if(!function_exists('getArtContent'))
+{
+    function getArtContent($content)
+    {
+        return mb_substr(strip_tags($content),0,50).'...';
+    }
+}
