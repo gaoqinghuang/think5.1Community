@@ -6,15 +6,37 @@ use app\common\model\Article;
 use app\common\model\ArticleCategory;
 
 use think\Db;
+use think\facade\Request;
 
 
 class Index extends Base
 {
 
-
     public function index()
     {
-        return $this->fetch('',['name'=>'xiaogao']);
+        $map = [];
+        $map[] = ['status','=',1];
+        $keywords = Request::param('keywords');
+        if(!empty($keywords))
+        {
+            $map[] = ['title','like','%'.$keywords.'%'];
+        }
+        $cateId = Request::param('cate_id');
+        if(isset($cateId))
+        {
+            $res = ArticleCategory::get($cateId);
+            $cateName = $res->name;
+            $map[] = ['cate_id','=',$cateId];
+        }
+        else
+        {
+            $cateName = '全部文章';
+        }
+
+        $artList = Db::table('zh_article')->where($map)->order('create_time','desc')->paginate(3);
+        $this->view->assign('artList', $artList);
+        $this->view->assign('cateName', $cateName);
+        return $this->fetch('',['title'=>'社区问答']);
     }
 
     //文章发布
@@ -71,5 +93,16 @@ class Index extends Base
         {
             $this->error('请求类型错误','insert');
         };
+    }
+
+    //文章详情页
+    public function detail()
+    {
+        $artId = Request::param('id');
+        $art = Article::get(function($query) use ($artId){
+            $query->where('id',$artId)->setInc('pv');
+        });
+        $this->view->assign('art',$art);
+        return $this->view->fetch('',['title'=>'详情页']);
     }
 }
