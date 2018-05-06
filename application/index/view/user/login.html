@@ -31,26 +31,26 @@
     <script>
         $(function(){
             $('#submit').on('click',function(){
-                $.ajax({
-                    type:'post',
-                    url:"{:url('loginCheck')}",
-                    data: $('#login').serialize(),
-                    async:false,
-                    dataType:'json',
-                    success:function(data){
-                        if(data.status == 1)
-                        {
-                            alert(data.message);
-                            window.location.href="{:url('index/index/index')}";
-                        }
-                        else
-                        {
-                            alert(data.message);
-                            window.location.back();
-                        }
+            $.ajax({
+                type:'post',
+                url:"{:url('loginCheck')}",
+                data: $('#login').serialize(),
+                async:false,
+                dataType:'json',
+                success:function(data){
+                    if(data.status == 1)
+                    {
+                        alert(data.message);
+                        window.location.href="{:url('index/index/index')}";
                     }
-                })
+                    else
+                    {
+                        alert(data.message);
+                        window.location.back();
+                    }
+                }
             })
+        })
         })
     </script>
 
