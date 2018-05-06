@@ -18,11 +18,49 @@
                     发布时间:{$art.create_time} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     阅读量:{$art.pv} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </p>
-                <div>{$art.content|getArtContent}</div>
+                <div>{:htmlspecialchars_decode($art.content)}</div>
                 <hr>
+            <button type="button" class="btn btn-default"  id="fav" user_id="{$Think.session.user_id}" article_id="{$art.id}">收藏</button>
         </div>
     </div>
 
-
+    <script>
+        $(function(){
+            $('#fav').on('click',function(){
+                var userId = $(this).attr('user_id')
+                var artId = $(this).attr('article_id')
+                if(userId && artId)
+                {
+                    $.ajax({
+                        type:'get',
+                        url:"{:url('index/fav')}",
+                        data: {
+                            user_id:userId,
+                            article_id:artId,
+                            time:new Date().getTime()
+                        },
+                        async:false,
+                        dataType:'json',
+                        success:function(data){
+                            switch (data.status)
+                            {
+                                case 1:
+                                    $('#fav').attr('class','btn btn-success');
+                                    $('#fav').text(data.message);
+                                    break;
+                                case 0:
+                                    $('#fav').attr('class','btn btn-default');
+                                    $('#fav').text(data.message);
+                                    break;
+                                case -1:
+                                    alert(data.message);
+                                    break;
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
 
     {/block}

@@ -105,4 +105,29 @@ class Index extends Base
         $this->view->assign('art',$art);
         return $this->view->fetch('',['title'=>'详情页']);
     }
+
+    //收藏
+    public function fav()
+    {
+        $this->isLogin();
+        if(!Request::isAjax())
+        {
+            return ['status' => -1,'message' => '请求类型错误'];
+        }
+        $data = Request::param();
+        $map[] = ['user_id','=', $data['user_id']];
+        $map[] = ['art_id','=', $data['article_id']];
+
+        $fav = Db::table('zh_user_fav')->where($map)->find();
+        if(is_null($fav))
+        {
+            Db::table('zh_user_fav')->data(['user_id' => $data['user_id'],'art_id' => $data['article_id']])->insert();
+            return ['status' => 1,'message' => '收藏成功'];
+        }
+        else
+        {
+            Db::table('zh_user_fav')->where($map)->delete();
+            return ['status' => 0,'message' => '已取消'];
+        }
+    }
 }

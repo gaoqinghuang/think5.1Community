@@ -15,7 +15,7 @@ class Base extends Controller
         $this->showNav();
     }
 
-    //防止重复登录
+
     public function isLogin()
     {
         if(!Session::has('user_id'))
